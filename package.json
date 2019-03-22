@@ -1,0 +1,56 @@
+{
+  "name": "gulp-v3-with-babel-project-boilerplate",
+  "version": "0.0.1",
+  "description": "Gulp v3 with Babel for ES6 project boilerplate",
+  "main": "",
+  "authors": [
+    ""
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently --kill-others \"npm run devJS\" \"npm run devGulp\"",
+    "devJS": "babel src/js/app.js --watch --out-file src/js/app-compiled.js --plugins transform-runtime",
+    "devGulp": "gulp dev",
+    "prod": "BABEL_ENV=production babel src/js/app.js --out-file src/js/app-compiled.js --plugins transform-runtime && gulp prod"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-runtime": "^6.26.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "concurrently": "^3.6.1",
+    "del": "^4.0.0",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-cache": "^1.1.1",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^5.0.0",
+    "gulp-imagemin": "^5.0.3",
+    "gulp-plumber": "^1.2.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 5 versions",
+              "not ie <= 8"
+            ]
+          }
+        }
+      ]
+    ]
+  }
+}
