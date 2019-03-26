@@ -11,19 +11,20 @@
     "lintJS": "eslint --fix './src/js/**/*.js'",
     "lintCSS": "stylelint --fix './src/scss/**/*.scss'",
     "dev": "concurrently --kill-others \"npm run devJS\" \"npm run devGulp\"",
-    "devJS": "babel src/js/app.js --watch --out-file src/js/app-compiled.js --plugins transform-runtime",
+    "devJS": "babel src/js/app.js --watch --out-file src/js/app-compiled.js",
     "devGulp": "gulp dev",
-    "prod": "BABEL_ENV=production babel src/js/app.js --out-file src/js/app-compiled.js --plugins transform-runtime && gulp prod"
+    "prod": "BABEL_ENV=production babel src/js/app.js --out-file src/js/app-compiled.js && gulp prod"
   },
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-runtime": "^6.26.0"
+    "@babel/runtime": "^7.4.2",
+    "core-js": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/polyfill": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
     "browser-sync": "^2.26.3",
     "concurrently": "^3.6.1",
     "del": "^4.0.0",
@@ -40,23 +41,32 @@
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-stylelint": "^8.0.0",
-    "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^1.0.4",
     "stylelint": "^9.10.1",
     "stylelint-config-standard": "^18.2.0"
   },
   "babel": {
     "presets": [
       [
-        "env",
+        "@babel/preset-env",
         {
           "targets": {
+            "node": "current",
             "browsers": [
               "last 5 versions",
               "not ie <= 8"
             ]
+          },
+          "useBuiltIns": "entry",
+          "corejs": {
+            "version": 3,
+            "proposals": true
           }
         }
       ]
+    ],
+    "plugins": [
+      "@babel/transform-runtime"
     ]
   }
 }
