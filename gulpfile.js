@@ -7,7 +7,7 @@ const gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     autoprefixer = require('gulp-autoprefixer'),
     cleanCSS = require('gulp-clean-css'),
-    uglify = require('gulp-uglify'),
+    uglify = require('gulp-uglify-es').default,
     imagemin = require('gulp-imagemin'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
@@ -60,6 +60,7 @@ const stylesheets = [
  * @type {string[]}
  */
 const javascript = [
+    'node_modules/@babel/polyfill/dist/polyfill.min.js', // need this if want to add babel polyfill code for e.g. Array.includes
     './src/js/vendor/**/*.js',
     './src/js/app-compiled.js' // use the compiled version as we are running babel task separately
 ];
