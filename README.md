@@ -1,2 +1,2 @@
 # gulp-with-babel-project-boilerplate
-Basic boilerplate for a Gulp project base with Babel for ES6+
+Basic boilerplate for a Gulp v4 project base with Babel for ES6+
