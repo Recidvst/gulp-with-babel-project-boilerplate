@@ -1,13 +1,15 @@
 {
-  "name": "gulp-v3-with-babel-project-boilerplate",
+  "name": "gulp-v4-with-babel-project-boilerplate",
   "version": "0.0.1",
-  "description": "Gulp v3 with Babel for ES6 project boilerplate",
+  "description": "Gulp v4 with Babel for ES6 project boilerplate",
   "main": "",
   "authors": [
     ""
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo 'npm OK'",
+    "lintJS": "eslint --fix './src/js/**/*.js'",
+    "lintCSS": "stylelint --fix './src/scss/**/*.scss'",
     "dev": "concurrently --kill-others \"npm run devJS\" \"npm run devGulp\"",
     "devJS": "babel src/js/app.js --watch --out-file src/js/app-compiled.js --plugins transform-runtime",
     "devGulp": "gulp dev",
@@ -25,7 +27,8 @@
     "browser-sync": "^2.26.3",
     "concurrently": "^3.6.1",
     "del": "^4.0.0",
-    "gulp": "^3.9.0",
+    "eslint": "^5.15.3",
+    "gulp": "^4.0.0",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-cache": "^1.1.1",
     "gulp-clean-css": "^4.0.0",
@@ -36,7 +39,10 @@
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2"
+    "gulp-stylelint": "^8.0.0",
+    "gulp-uglify": "^3.0.2",
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0"
   },
   "babel": {
     "presets": [
