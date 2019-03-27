@@ -57,7 +57,7 @@
               "not ie <= 8"
             ]
           },
-          "useBuiltIns": "entry",
+          "useBuiltIns": "usage",
           "corejs": {
             "version": 3,
             "proposals": true
