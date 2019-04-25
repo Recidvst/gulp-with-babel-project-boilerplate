@@ -15,6 +15,7 @@ const gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     del = require('del'),
     path = require('path'),
+    babel = require('gulp-babel'),
     eslint = require("gulp-eslint"),
     stylelint = require("gulp-stylelint"),
     browserSync = require('browser-sync').create();
@@ -60,7 +61,7 @@ const stylesheets = [
  * @type {string[]}
  */
 const javascript = [
-    'node_modules/@babel/polyfill/dist/polyfill.min.js', // need this if want to add babel polyfill code for e.g. Array.includes
+    './node_modules/@babel/polyfill/dist/polyfill.min.js', // need this if want to add babel polyfill code for e.g. Array.includes
     './src/js/vendor/**/*.js',
     './src/js/app-compiled.js' // use the compiled version as we are running babel task separately
 ];
@@ -105,20 +106,40 @@ function devStyles() {
 }
 // Production CSS
 function prodStyles() {
-  return gulp
-  .src(stylesheets)
-  .pipe(plumber(plumberOptions))
-  .pipe(scss({
-      paths: [path.join(__dirname, 'scss', 'includes')]
-  }))
-  .pipe(autoprefixer(autoPrefixerOptions))
-  .pipe(cleanCSS({compatibility: 'ie9', debug: true}, (details) => {
-      console.log('\x1b[35m%s\x1b[0m', `Size of original ${details.name} file = ${details.stats.originalSize}`);
-      console.log('\x1b[35m%s\x1b[0m', `Size of compressed ${details.name} file = ${details.stats.minifiedSize}`);
-  }))
-  .pipe(rename({suffix: '.min'}))
-  .pipe(gulp.dest('./assets/css/'))
-  .on('end', (e) => { console.log('\x1b[32m%s\x1b[0m', 'Production styles built!'); })
+  if (process.env.NODE_ENV === 'production') { // if building for release, don't use sourcemaps
+    return gulp
+    .src(stylesheets)
+    .pipe(plumber(plumberOptions))
+    .pipe(scss({
+        paths: [path.join(__dirname, 'scss', 'includes')]
+    }))
+    .pipe(autoprefixer(autoPrefixerOptions))
+    .pipe(cleanCSS({compatibility: 'ie9', debug: true}, (details) => {
+        console.log('\x1b[35m%s\x1b[0m', `Size of original ${details.name} file = ${details.stats.originalSize}`);
+        console.log('\x1b[35m%s\x1b[0m', `Size of compressed ${details.name} file = ${details.stats.minifiedSize}`);
+    }))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('./assets/css/'))
+    .on('end', (e) => { console.log('\x1b[32m%s\x1b[0m', 'Release styles built!'); })
+  }
+  else {
+    return gulp
+    .src(stylesheets)
+    .pipe(plumber(plumberOptions))
+    .pipe(sourcemaps.init())
+    .pipe(scss({
+        paths: [path.join(__dirname, 'scss', 'includes')]
+    }))
+    .pipe(autoprefixer(autoPrefixerOptions))
+    .pipe(cleanCSS({compatibility: 'ie9', debug: true}, (details) => {
+        console.log('\x1b[35m%s\x1b[0m', `Size of original ${details.name} file = ${details.stats.originalSize}`);
+        console.log('\x1b[35m%s\x1b[0m', `Size of compressed ${details.name} file = ${details.stats.minifiedSize}`);
+    }))
+    .pipe(sourcemaps.write())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('./assets/css/'))
+    .on('end', (e) => { console.log('\x1b[32m%s\x1b[0m', 'Pre-production styles built!'); })
+  }
 }
 
 /**
@@ -139,14 +160,36 @@ function devScripts() {
 }
 // Production JS
 function prodScripts() {
-  return gulp
-  .src(javascript)
-  .pipe(plumber(plumberOptions))
-  .pipe(concat({path: 'app.js', stat: {mode: 0777}}))
-  .pipe(uglify({warnings: 'verbose'}))
-  .pipe(rename({suffix: '.min'}))
-  .pipe(gulp.dest('./assets/js'))
-  .on('end', (e) => { console.log('\x1b[32m%s\x1b[0m', 'Production scripts built!'); })
+  if (process.env.NODE_ENV === 'production') { // if building for release, don't use sourcemaps
+    return gulp
+    .src(javascript)
+    .pipe(plumber(plumberOptions))
+    .pipe(babel({
+      presets: ['@babel/env'],
+      plugins: ['@babel/transform-runtime']
+    }))
+    .pipe(concat({path: 'app.js', stat: {mode: 0777}}))
+    .pipe(uglify({warnings: 'verbose'}))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('./assets/js'))
+    .on('end', (e) => { console.log('\x1b[32m%s\x1b[0m', 'Release scripts built!'); })
+  }
+  else {
+    return gulp
+    .src(javascript)
+    .pipe(plumber(plumberOptions))
+    .pipe(sourcemaps.init())
+    .pipe(babel({
+      presets: ['@babel/env'],
+      plugins: ['@babel/transform-runtime']
+    }))
+    .pipe(concat({path: 'app.js', stat: {mode: 0777}}))
+    .pipe(uglify({warnings: 'verbose'}))
+    .pipe(sourcemaps.write())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('./assets/js'))
+    .on('end', (e) => { console.log('\x1b[32m%s\x1b[0m', 'Pre-production scripts built!'); })
+  }
 }
 
 /**
@@ -222,7 +265,7 @@ function browserSyncServe(cb) {
     // proxy: {
     //   target: "site.test", // set to your local domain. Can't use server and proxy options
     // },
-    https: true,
+    // https: true,
     port: 3333,
     cors: true,
     ui: {
