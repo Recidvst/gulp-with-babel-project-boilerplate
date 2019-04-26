@@ -2,29 +2,32 @@
   "name": "gulp-v4-with-babel-project-boilerplate",
   "version": "0.0.1",
   "description": "Gulp v4 with Babel for ES6 project boilerplate",
-  "main": "",
+  "main": "app.js",
   "authors": [
     ""
   ],
   "scripts": {
     "test": "echo 'npm OK'",
-    "lintJS": "eslint --fix './src/js/**/*.js'",
-    "lintCSS": "stylelint --fix './src/scss/**/*.scss'",
-    "dev": "gulp dev",
-    "prod": "BABEL_ENV=production gulp prod",
-    "release": "NODE_ENV=production npm run prod"
+    "lintJS": "eslint --fix './src/js/*.js'",
+    "lintCSS": "gulp lintCSS",
+    "dev": "concurrently --kill-others \"npm run devJS\" \"npm run devGulp\"",
+    "devJS": "babel src/js/app.js --watch --out-file src/js/app-compiled.js",
+    "devGulp": "gulp dev",
+    "prod": "BABEL_ENV=production babel src/js/app.js --out-file src/js/app-compiled.js && gulp prod",
+    "release": "NODE_ENV=production BABEL_ENV=production npm run prod"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
-    "core-js": "^3.0.0"
-  },
-  "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.4.3",
     "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/runtime": "^7.4.2",
     "@babel/polyfill": "^7.4.0",
-    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-env": "^7.4.2",
+    "core-js": "^3.0.0"
+  },
+  "devDependencies": {
     "browser-sync": "^2.26.3",
+    "concurrently": "^3.6.1",
     "del": "^4.0.0",
     "eslint": "^5.15.3",
     "gulp": "^4.0.0",
