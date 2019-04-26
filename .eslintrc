@@ -2,13 +2,18 @@
   "env": {
     "es6": true,
     "browser": true,
-    "node": true,
     "jquery": true
   },
   "extends": "eslint:recommended",
   "rules": {
     "no-console": ["error", { allow: ["warn"] }],
-    "no-unused-vars": "off"
+    "no-tabs": ["off"],
+    "indent": ["off"],
+    "eol-last": "off",
+    "func-names": "off",
+    "max-len": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "no-shadow": ["error", { "hoist": "never" }],
   },
   "globals": {
     "window": true,
