@@ -21,6 +21,10 @@
       "media-feature-parentheses-space-inside": "always",
       "media-feature-colon-space-before": "never",
       "media-feature-colon-space-after": "always",
-      "rule-empty-line-before": ["always", {"except": ["after-rule"]}]
+      "rule-empty-line-before": ["always", {"except": ["after-rule"]}],
+      "at-rule-no-unknown": null,
+      "no-descending-specificity": null,
+      "declaration-block-no-duplicate-properties": null,
+      "no-duplicate-selectors": null
   }
 }
