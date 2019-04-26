@@ -15,7 +15,6 @@ const gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     del = require('del'),
     path = require('path'),
-    babel = require('gulp-babel'),
     eslint = require("gulp-eslint"),
     stylelint = require("gulp-stylelint"),
     browserSync = require('browser-sync').create();
@@ -164,10 +163,6 @@ function prodScripts() {
     return gulp
     .src(javascript)
     .pipe(plumber(plumberOptions))
-    .pipe(babel({
-      presets: ['@babel/env'],
-      plugins: ['@babel/transform-runtime']
-    }))
     .pipe(concat({path: 'app.js', stat: {mode: 0777}}))
     .pipe(uglify({warnings: 'verbose'}))
     .pipe(rename({suffix: '.min'}))
@@ -179,10 +174,6 @@ function prodScripts() {
     .src(javascript)
     .pipe(plumber(plumberOptions))
     .pipe(sourcemaps.init())
-    .pipe(babel({
-      presets: ['@babel/env'],
-      plugins: ['@babel/transform-runtime']
-    }))
     .pipe(concat({path: 'app.js', stat: {mode: 0777}}))
     .pipe(uglify({warnings: 'verbose'}))
     .pipe(sourcemaps.write())
